@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      font-size: 16px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>To-Do List</h1>
+
+  <input type="text" id="activityInput" placeholder="Enter an activity" />
+  <button onclick="addActivity()">Add Activity</button>
+  <button onclick="removeActivity()">Remove Activity</button>
+
+  <h2>To-Do List:</h2>
+  <ul id="toDoList"></ul>
+
+  <script>
+    // Initialize the empty array for the to-do list
+    let toDoList = [];
+
+    // Function to add an activity to the to-do list
+    function addActivity() {
+      const activity = document.getElementById('activityInput').value;
+      if (activity && typeof activity === 'string') {
+        toDoList.push(activity);
+        displayList();
+        document.getElementById('activityInput').value = ''; // Clear input field
+        console.log(`Added: "${activity}"`);
+      } else {
+        alert('Please provide a valid activity.');
+      }
+    }
+
+    // Function to remove an activity from the to-do list
+    function removeActivity() {
+      const activity = document.getElementById('activityInput').value;
+      const index = toDoList.indexOf(activity);
+
+      if (index > -1) {
+        toDoList.splice(index, 1);
+        displayList();
+        document.getElementById('activityInput').value = ''; // Clear input field
+        console.log(`Removed: "${activity}"`);
+      } else {
+        alert(`Activity: "${activity}" not found in the list.`);
+      }
+    }
+
+    // Function to display the to-do list
+    function displayList() {
+      const listElement = document.getElementById('toDoList');
+      listElement.innerHTML = ''; // Clear current list
+
+      toDoList.forEach((item, index) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `${item} <button onclick="removeSpecificActivity(${index})">Remove</button>`;
+        listElement.appendChild(listItem);
+      });
+    }
+
+    // Function to remove a specific activity from the list by index
+    function removeSpecificActivity(index) {
+      toDoList.splice(index, 1);
+      displayList();
+    }
+  </script>
+
+</body>
+</html>
