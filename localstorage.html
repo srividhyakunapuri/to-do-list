@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>To-Do List with Local Storage</title>
+   <style>
+     body {
+       font-family: Arial, sans-serif;
+       margin: 20px;
+       background-color: #f7f7f7;
+     }
+     input, button {
+       padding: 10px;
+       margin: 5px;
+       font-size: 16px;
+     }
+     ul {
+       list-style-type: none;
+       padding: 0;
+     }
+     li {
+       padding: 10px;
+       margin: 5px 0;
+       background-color: #fff;
+       border: 1px solid #ddd;
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+     }
+     button.remove-btn {
+       background-color: red;
+       color: white;
+       border: none;
+       cursor: pointer;
+     }
+     button.remove-btn:hover {
+       background-color: darkred;
+     }
+   </style>
+ </head>
+ <body>
+ 
+   <h1>To-Do List</h1>
+ 
+   <input type="text" id="activityInput" placeholder="Enter a task" />
+   <button onclick="addActivity()">Add Task</button>
+ 
+   <h2>Tasks:</h2>
+   <ul id="toDoList"></ul>
+ 
+   <script>
+     // Initialize the to-do list from localStorage or as an empty array if no data is found
+     let toDoList = JSON.parse(localStorage.getItem('toDoList')) || [];
+ 
+     // Function to add an activity to the to-do list
+     function addActivity() {
+       const activity = document.getElementById('activityInput').value;
+       if (activity) {
+         toDoList.push(activity);
+         saveToLocalStorage();
+         displayList();
+         document.getElementById('activityInput').value = ''; // Clear input field
+       } else {
+         alert('Please enter a valid task.');
+       }
+     }
+ 
+     // Function to remove an activity from the to-do list
+     function removeActivity(index) {
+       toDoList.splice(index, 1);
+       saveToLocalStorage();
+       displayList();
+     }
+ 
+     // Function to save the to-do list to localStorage
+     function saveToLocalStorage() {
+       localStorage.setItem('toDoList', JSON.stringify(toDoList));
+     }
+ 
+     // Function to display the to-do list
+     function displayList() {
+       const listElement = document.getElementById('toDoList');
+       listElement.innerHTML = ''; // Clear current list
+ 
+       toDoList.forEach((item, index) => {
+         const listItem = document.createElement('li');
+         listItem.innerHTML = `${item} 
+                               <button class="remove-btn" onclick="removeActivity(${index})">Remove</button>`;
+         listElement.appendChild(listItem);
+       });
+     }
+ 
+     // Display the list when the page loads
+     displayList();
+   </script>
+ 
+ </body>
+ </html>
